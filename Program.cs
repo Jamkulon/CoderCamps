@@ -3,66 +3,61 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Inheritance
+namespace Solution
 {
-    //abstract class be inherited from but never instanciated  anything with 'Car' will pull the information to that class
-    public abstract class Car
+
+    public class Product
     {
-        public string VIN { get; set; }
-        public string Model { get; set; }
+        public int Id { get; set; }
+        public string Name { get; set; }
         public decimal Price { get; set; }
-        public decimal CalculateTax()
+
+        public Product( int givenId, string supplyName, decimal price)
         {
-            return Price * .08m;
+            Id = givenId;
+            Name = supplyName;
+            Price = price;
+        }
+    }
+    public class ProductCatalog
+    {
+        public List<Product> Products { get; set; }
+
+        public Product LookUp(int id)
+        {
+            Product prodToReturn = null;
+            foreach(Product prod in Products)
+            {
+                if(prod.Id == id)
+                {
+                    prodToReturn = prod;
+                }
+                
+            }
+            return prodToReturn;
         }
 
+        public ProductCatalog()
+        {
+            Products = new List<Product>()
+            {
+                new Product(1, "Milk", 1.79m),
+                new Product(2, "Eggs", 2.99m),
+                new Product(3, "Cheese", 5.99m)
+            };
+        }
     }
-    //car classes
-    public class NewCar : Car
-    {
-
-    }
-
-    public class UsedCar : Car
-    {
-        public int Miles { get; set; }
-    }
-
-    public class CertifiedUsedCar : UsedCar
-    {
-
-        public int WarrantyMonths { get; set; }
-    }
-    
-
     public class Program
     {
         public static void Main(string[] args)
         {
-            CertifiedUsedCar vw = new CertifiedUsedCar()
+            ProductCatalog catalog = new ProductCatalog();
             {
-                VIN = "456f456dw456456",
-                Price = 1499.99m
-            };
+                Product prod= catalog.LookUp(2);
 
-            NewCar mazda = new NewCar()
-            {
-                VIN = "456d456et48946",
-                Price = 23699.00m
-            };
-
-            //create collection of cars
-            Car[]cars = new Car[] { vw, mazda };  //this is essential to the whole process
-
-            decimal taxOnVw = vw.CalculateTax();
-            decimal taxOncar = mazda.CalculateTax();
-            Console.WriteLine(taxOnVw);
-            Console.WriteLine(taxOncar);
-            Console.ReadLine();
+                Console.WriteLine("The product with the id of {0} is {1} and costs {2}", prod.Id, prod.Name, prod.Price.ToString("c"));
+                Console.ReadLine();
+            }
         }
-
-
-
     }
 }
-
